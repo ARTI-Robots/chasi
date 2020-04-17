@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="ouster_os1_64">
+
+  <link name="ouster_base_link">
+  </link>
+
+  <joint name="ouster_base_joint" type="fixed">
+    <parent link="payload_plate"/>
+    <child link="ouster_base_link"/>
+    <origin rpy="0 0 0" xyz="0.33 0.0 0.025"/>
+  </joint>
+
+  <link name="ouster_laser_link">
+  </link>
+
+  <joint name="ouster_laser_joint" type="fixed">
+    <parent link="ouster_base_link"/>
+    <child link="ouster_laser_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.04"/>
+  </joint>
+
+  <xacro:include filename="$(find arti_gazebo_ouster)/urdf/OS1-64.urdf.xacro"/>
+  <OS1-64 parent="ouster_laser_link" name="os1_sensor" hz="10" samples="220">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </OS1-64>
+
+</robot>

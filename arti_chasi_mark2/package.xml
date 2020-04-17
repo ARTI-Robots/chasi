@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>arti_chasi_mark2</name>
+  <version>1.0.0</version>
+  <description>Provides the URDF of the robot as well as launch files to spawn the URDF and the driver of the robot.</description>
+
+  <maintainer email="c.muehlbacher@arti-robots.com">Clemens Mühlbacher</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>arti_base_control</build_depend>
+  <build_depend>roslaunch</build_depend>
+
+  <build_export_depend>arti_base_control</build_export_depend>
+
+  <exec_depend>arti_base_control</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>rqt_robot_steering</exec_depend>
+  <exec_depend>rviz</exec_depend>
+  <exec_depend>urdf</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>hector_gazebo_plugins</exec_depend>
+
+  <export>
+  </export>
+</package>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="add_payload" default="false"/>
+    <arg name="use_sick_mrs1000" default="false"/>
+    <arg name="use_realsense_d435" default="false"/>
+    <arg name="use_velodyne_hdl32" default="false"/>
+    <arg name="use_velodyne_puck_lite" default="false"/>
+    <arg name="use_ouster_os1_16" default="false"/>
+    <arg name="use_ouster_os1_32" default="false"/>
+    <arg name="use_ouster_os1_64" default="false"/>
+    <arg name="use_imu" default="false"/>
+    <arg name="use_gps" default="false"/>    
+    <arg name="world_name" default=""/>
+    <arg name="initial_x" default="0"/>
+    <arg name="initial_y" default="0"/>
+    <arg name="initial_z" default="0.15"/>
+    <arg name="initial_yaw" default="0"/>
+
+    <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world_name)"/>
+        <arg name="paused" value="false"/>
+        <arg name="gui" value="false"/>
+        <!-- more default parameters can be changed here -->
+    </include>
+
+    <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="true" output="screen"/>
+
+    <!-- Launch VESC-controller-mockup -->
+    <include file="$(find arti_chasi_gazebo)/launch/launch_chasi_sim_without_gazebo.launch">
+        <arg name="add_payload" value="$(arg add_payload)"/>
+        <arg name="use_sick_mrs1000" value="$(arg use_sick_mrs1000)"/>
+        <arg name="use_realsense_d435" value="$(arg use_realsense_d435)"/>
+        <arg name="use_velodyne_hdl32" value="$(arg use_velodyne_hdl32)"/>
+        <arg name="use_velodyne_puck_lite" value="$(arg use_velodyne_puck_lite)"/>
+        <arg name="use_ouster_os1_16" value="$(arg use_ouster_os1_16)"/>
+        <arg name="use_ouster_os1_32" value="$(arg use_ouster_os1_32)"/>
+        <arg name="use_ouster_os1_64" value="$(arg use_ouster_os1_64)"/>
+        <arg name="use_imu" value="$(arg use_imu)"/>
+        <arg name="use_gps" value="$(arg use_gps)"/>        
+    </include>
+
+    <!-- Spawn a robot into Gazebo -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model chasi -x $(arg initial_x) -y $(arg initial_y) -z $(arg initial_z) -Y $(arg initial_yaw)" />
+
+    <!-- load the joint state publisher GUI -->
+    <arg name="load_joint_state_publisher" default="true"/>
+    <arg name="joint_control_topic" default="/joint_states"/>
+
+    <!-- topic for gzplugin_joint_state_client -->
+    <rosparam param="joint_state_control_topic" subst_value="true">$(arg joint_control_topic)</rosparam>
+    <!-- topic for gzplugin_joint_state_publisher -->
+    <rosparam param="publish_joint_states_topic">/joint_states</rosparam>
+
+    <include file="$(find arti_chasi_gazebo)/launch/joint_controller_manager.launch">
+    </include>
+
+    <include file="$(find arti_chasi_gazebo)/launch/joint_control_cmd_translator.launch">
+    </include>
+
+
+</launch>

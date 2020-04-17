@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- imu sensor -->
+
+  <link name="imu_sim_link">
+    <!--<xacro:null_inertial/>-->
+    <inertial>  <!-- for some reason I need this inertial (if I choose null_inertial, the robot explodes and if no inertial set, the robot doesn't spawn in Gazebo) -->
+      <mass value="0.01"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+  <joint name="base_link_to_imu_sim_link" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_sim_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.22"/>
+  </joint>
+
+  <gazebo reference="imu_sim_link">
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu</topicName>
+        <bodyName>imu_sim_link</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>
+        <gaussianNoise>0.01</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu_sim_link</frameName>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+</robot>

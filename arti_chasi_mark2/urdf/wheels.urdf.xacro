@@ -1,0 +1,340 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="chasi_wheels">
+
+  <!-- Wheel properties -->
+  <xacro:macro name="Chasi_MarkII_Wheel" params="name">
+    <link name="${name}">
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="2.637" />
+        <inertia  ixx="0.02467" ixy="0" ixz="0" iyy="0.04411" iyz="0" izz="0.02467" />
+      </inertial>
+      <visual>
+        <geometry>
+          <cylinder length="0.065" radius="0.1225"/>
+        </geometry>
+        <material name="arti_black"/>
+      </visual>
+      <visual>
+        <origin xyz="0.08 0 0.0325"/>
+        <geometry>
+          <cylinder length="0.001" radius="0.02"/>
+        </geometry>
+        <material name="arti_blue">
+          <color rgba="0.365 0.769 0.898 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <cylinder length="0.065" radius="0.1225"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <gazebo reference="Chasi_MarkII_Wheel"> <!-- TODO: check for useful (and correct?) values -->
+    <mu1 value="1000000.0"/>
+    <mu2 value="1000000.0"/>
+    <kp value="10000000.0" />
+    <kd value="100.0" />
+    <fdir1 value="1 0 0"/>
+    <maxVel>5.0</maxVel>
+    <minDepth>0.01</minDepth>
+  </gazebo>
+
+  <!-- Wheelhinges -->
+  <link name="front_left_hinge">
+    <inertial>
+      <mass value="0.01" />
+      <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="arti_black"/>
+    </visual>
+    <xacro:null_inertial/>
+  </link>
+
+  <link name="front_right_hinge">
+    <inertial>
+      <mass value="0.01" />
+      <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="arti_black"/>
+    </visual>
+    <xacro:null_inertial/>
+  </link>
+
+  <link name="rear_left_hinge">
+    <inertial>
+      <mass value="0.01" />
+      <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="arti_black"/>
+    </visual>
+    <xacro:null_inertial/>
+  </link>
+
+  <link name="rear_right_hinge">
+    <inertial>
+      <mass value="0.01" />
+      <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="arti_black"/>
+    </visual>
+    <xacro:null_inertial/>
+  </link>
+
+
+  <joint name="front_left_hinge_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="front_left_hinge"/>
+    <origin xyz="0.28 0.22 0.0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57075" upper="1.57075" effort="100" velocity="3.14159"/>
+    <dynamics damping="1" friction="0.2"/> <!-- TODO: to be evaluated/tuned in Gazebo -->
+  </joint>
+
+  <joint name="front_right_hinge_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="front_right_hinge"/>
+    <origin xyz="0.28 -0.22 0.0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57075" upper="1.57075" effort="100" velocity="3.14159"/>
+    <dynamics damping="1" friction="0.2"/> <!-- TODO: to be evaluated/tuned in Gazebo -->
+  </joint>
+
+  <joint name="rear_left_hinge_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="rear_left_hinge"/>
+    <origin xyz="-0.28 0.22 0.0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57075" upper="1.57075" effort="100" velocity="3.14159"/>
+    <dynamics damping="1" friction="0.2"/> <!-- TODO: to be evaluated/tuned in Gazebo -->
+  </joint>
+
+  <joint name="rear_right_hinge_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="rear_right_hinge"/>
+    <origin xyz="-0.28 -0.22 0.0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57075" upper="1.57075" effort="100" velocity="3.14159"/>
+    <dynamics damping="1" friction="0.2"/> <!-- TODO: to be evaluated/tuned in Gazebo -->
+  </joint>
+
+  <xacro:Chasi_MarkII_Wheel name="front_left_wheel"/>
+  <xacro:Chasi_MarkII_Wheel name="front_right_wheel"/>
+  <xacro:Chasi_MarkII_Wheel name="rear_left_wheel"/>
+  <xacro:Chasi_MarkII_Wheel name="rear_right_wheel"/>
+
+  <gazebo reference="front_left_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="front_right_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="rear_left_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="rear_right_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- Add some wheel markers to the wheels to better visualize movement in Gazebo because I can only color a complete link -->
+  <xacro:macro name="Wheel_Marker" params="name">
+    <link name="${name}">
+      <visual>
+        <origin xyz="0.08 0 0.0325"/>
+        <geometry>
+          <cylinder length="0.002" radius="0.02"/>
+        </geometry>
+        <material name="arti_blue">
+          <color rgba="0.365 0.769 0.898 1.0"/>
+        </material>
+      </visual>
+    </link>
+    <xacro:null_inertial/>
+  </xacro:macro>
+
+  <xacro:Wheel_Marker name="wheel_marker_front_left"/>
+  <xacro:Wheel_Marker name="wheel_marker_front_right"/>
+  <xacro:Wheel_Marker name="wheel_marker_rear_left"/>
+  <xacro:Wheel_Marker name="wheel_marker_rear_right"/>
+
+  <gazebo reference="wheel_marker_front_left">
+    <material>Gazebo/Turquoise</material>
+  </gazebo>
+  <gazebo reference="wheel_marker_front_right">
+    <material>Gazebo/Turquoise</material>
+  </gazebo>
+  <gazebo reference="wheel_marker_rear_left">
+    <material>Gazebo/Turquoise</material>
+  </gazebo>
+  <gazebo reference="wheel_marker_rear_right">
+    <material>Gazebo/Turquoise</material>
+  </gazebo>
+
+  <joint name="wheel_marker_joint1" type="fixed">
+    <parent link="front_left_wheel"/>
+    <child link="wheel_marker_front_left"/>
+    <origin xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="wheel_marker_joint2" type="fixed">
+    <parent link="front_right_wheel"/>
+    <child link="wheel_marker_front_right"/>
+    <origin xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="wheel_marker_joint3" type="fixed">
+    <parent link="rear_left_wheel"/>
+    <child link="wheel_marker_rear_left"/>
+    <origin xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="wheel_marker_joint4" type="fixed">
+    <parent link="rear_right_wheel"/>
+    <child link="wheel_marker_rear_right"/>
+    <origin xyz="0.0 0.0 0.0"/>
+  </joint>
+
+  <!-- wheel joints -->
+  <joint name="front_left_wheel_joint" type="continuous">
+    <parent link="front_left_hinge"/>
+    <child link="front_left_wheel"/>
+    <origin rpy="-1.57075 0 0" xyz="0.0 0.06 0.0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <joint name="front_right_wheel_joint" type="continuous">
+    <parent link="front_right_hinge"/>
+    <child link="front_right_wheel"/>
+    <origin rpy="1.57075 0 0" xyz="0.0 -0.06 0.0"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+
+  <joint name="rear_left_wheel_joint" type="continuous">
+    <parent link="rear_left_hinge"/>
+    <child link="rear_left_wheel"/>
+    <origin rpy="-1.57075 0 0" xyz="0.0 0.06 0.0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <joint name="rear_right_wheel_joint" type="continuous">
+    <parent link="rear_right_hinge"/>
+    <child link="rear_right_wheel"/>
+    <origin rpy="1.57075 0 0" xyz="0.0 -0.06 0.0"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+
+  <!-- Define wheel hinge transmissions -->
+  <transmission name="trans_front_left_hinge_joint">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_left_hinge_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="trans_front_right_hinge_joint">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_right_hinge_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="trans_rear_left_hinge_joint">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_left_hinge_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor3">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="trans_rear_right_hinge_joint">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_right_hinge_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor4">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- Define wheel transmissions -->
+  <transmission name="trans_front_left_wheel_joint">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_left_wheel_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="trans_front_right_wheel_joint">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_right_wheel_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="trans_rear_left_wheel_joint">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_left_wheel_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor3">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="trans_rear_right_wheel_joint">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_right_wheel_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor4">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/chasi</robotNamespace>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+</robot>

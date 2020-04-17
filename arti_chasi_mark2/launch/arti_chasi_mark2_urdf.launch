@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="add_payload" default="false"/>
+  <arg name="use_sick_mrs1000" default="false"/>
+  <arg name="use_realsense_d435" default="false"/>
+  <arg name="use_velodyne_hdl32" default="false"/>
+  <arg name="use_velodyne_puck_lite" default="false"/>
+  <arg name="use_ouster_os1_16" default="false"/>
+  <arg name="use_ouster_os1_32" default="false"/>
+  <arg name="use_ouster_os1_64" default="false"/>
+  <arg name="use_imu" default="false"/>
+  <arg name="use_gps" default="false"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find arti_chasi_mark2)/urdf/arti_chasi_mark2_standalone.urdf.xacro add_payload:=$(arg add_payload) use_sick_mrs1000:=$(arg use_sick_mrs1000) use_realsense_d435:=$(arg use_realsense_d435) use_velodyne_hdl32:=$(arg use_velodyne_hdl32) use_velodyne_puck_lite:=$(arg use_velodyne_puck_lite) use_ouster_os1_16:=$(arg use_ouster_os1_16) use_ouster_os1_32:=$(arg use_ouster_os1_32) use_ouster_os1_64:=$(arg use_ouster_os1_64) use_imu:=$(arg use_imu) use_gps:=$(arg use_gps)" />
+
+  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" respawn="true">
+    <param name="publish_frequency" type="double" value="30"/>
+  </node>
+
+</launch>
+

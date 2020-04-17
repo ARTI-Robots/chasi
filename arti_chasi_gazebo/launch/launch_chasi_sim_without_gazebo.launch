@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="add_payload" default="false"/>
+  <arg name="use_sick_mrs1000" default="false"/>
+  <arg name="use_realsense_d435" default="false"/>
+  <arg name="use_velodyne_hdl32" default="false"/>
+  <arg name="use_velodyne_puck_lite" default="false"/>
+  <arg name="use_ouster_os1_16" default="false"/>
+  <arg name="use_ouster_os1_32" default="false"/>
+  <arg name="use_ouster_os1_64" default="false"/>
+  <arg name="use_imu" default="false"/>
+  <arg name="use_gps" default="false"/>
+
+  <!-- Start Chasi Mark2 base (controller) -->
+  <include file="$(find arti_chasi_mark2)/launch/arti_chasi_mark2_base.launch">
+    <arg name="use_mockup" value="true"/>
+  </include>
+
+  <!-- Publish URDF of Chasi Mark2 -->
+  <include file="$(find arti_chasi_mark2)/launch/arti_chasi_mark2_urdf.launch">
+    <arg name="add_payload" value="$(arg add_payload)"/>
+    <arg name="use_sick_mrs1000" value="$(arg use_sick_mrs1000)"/>
+    <arg name="use_realsense_d435" value="$(arg use_realsense_d435)"/>
+    <arg name="use_velodyne_hdl32" value="$(arg use_velodyne_hdl32)"/>
+    <arg name="use_velodyne_puck_lite" value="$(arg use_velodyne_puck_lite)"/>
+    <arg name="use_ouster_os1_16" value="$(arg use_ouster_os1_16)"/>
+    <arg name="use_ouster_os1_32" value="$(arg use_ouster_os1_32)"/>
+    <arg name="use_ouster_os1_64" value="$(arg use_ouster_os1_64)"/>
+    <arg name="use_imu" value="$(arg use_imu)"/>
+    <arg name="use_gps" value="$(arg use_gps)"/>
+  </include>
+    
+</launch>

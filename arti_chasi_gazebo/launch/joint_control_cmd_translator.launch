@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- load the translator between the joint-states and the commands for the specific joints -->
+    <node name="gazebo_controller" pkg="arti_chasi_gazebo" type="control.py" respawn="false" output="screen"/>
+</launch>

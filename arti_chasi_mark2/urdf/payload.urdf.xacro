@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="chasi_payload">
+
+  <link name="payload">
+    <visual>
+      <origin rpy="0 0 1.57075" xyz="0.2 0.0 0.1125"/>
+      <geometry>
+        <box size="0.6 0.4 0.225"/>
+      </geometry>
+      <material name="arti_black"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 1.57075" xyz="0.2 0.0 0.1125"/>
+      <geometry>
+        <box size="0.6 0.4 0.225"/>
+      </geometry>
+    </collision>
+    <xacro:solid_cuboid_inertial
+            width="0.6" depth="0.4"
+            height="0.225" mass="3.0">
+      <origin rpy="0 0 1.57075" xyz="0.2 0.0 0.1125"/>
+    </xacro:solid_cuboid_inertial>
+    <visual>
+      <origin rpy="0 0 1.57075" xyz="-0.2 0.0 0.1125"/>
+      <geometry>
+        <box size="0.6 0.4 0.225"/>
+      </geometry>
+      <material name="arti_black"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 1.57075" xyz="-0.2 0.0 0.1125"/>
+      <geometry>
+        <box size="0.6 0.4 0.225"/>
+      </geometry>
+    </collision>
+    <xacro:solid_cuboid_inertial
+            width="0.6" depth="0.4"
+            height="0.225" mass="3.0">
+      <origin rpy="0 0 1.57075" xyz="-0.2 0.0 0.1125"/>
+    </xacro:solid_cuboid_inertial>
+  </link>
+
+  <joint name="payload_joint" type="fixed">
+    <parent link="payload_plate"/>
+    <child link="payload"/>
+    <origin xyz="0.0 0.0 0.02"/>
+  </joint>
+
+  <gazebo reference="payload">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+</robot>

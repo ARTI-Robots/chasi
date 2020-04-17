@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- imu sensor -->
+
+  <link name="gps_sim_link">
+    <!--<xacro:null_inertial/>-->
+    <inertial>  <!-- for some reason I need this inertial (if I choose null_inertial, the robot explodes and if no inertial set, the robot doesn't spawn in Gazebo) -->
+      <mass value="0.01"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+  <joint name="base_link_to_gps_sim_link" type="fixed">
+    <parent link="base_link"/>
+    <child link="gps_sim_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.22"/>
+  </joint>
+
+  <gazebo>
+    <plugin name="gps_sim" filename="libhector_gazebo_ros_gps.so">
+      <alwaysOn>1</alwaysOn>
+      <updateRate>10.0</updateRate>
+      <bodyName>gps_sim_link</bodyName>
+      <topicName>gps/fix</topicName>
+      <velocityTopicName>gps/fix_velocity</velocityTopicName>
+      <drift>5.0 5.0 5.0</drift>
+      <gaussianNoise>0.1 0.1 0.1</gaussianNoise>
+      <velocityDrift>0 0 0</velocityDrift>
+      <velocityGaussianNoise>0.1 0.1 0.1</velocityGaussianNoise>
+    </plugin>
+  </gazebo>
+
+</robot>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="respawn" default="false"/>
+  <arg name="max_velocity_linear" default="2.0"/>
+  <arg name="max_velocity_angular" default="1.5708"/>
+  <arg name="steering_angle_tolerance" default="0.06"/>
+  <arg name="icr_line_relative_position" default="0.5"/>
+  <arg name="allowed_brake_velocity" default="0.04"/>
+  <arg name="brake_velocity" default="0.001"/>
+  <arg name="brake_current" default="5.0"/>
+  <arg name="odometry_rate" default="30.0"/>
+  <arg name="publish_motor_states" default="false"/>
+  <arg name="use_mockup" default="false"/>
+
+  <node name="base_control" pkg="arti_base_control" type="arti_base_control_node" output="screen" respawn="$(arg respawn)">
+    <param name="odometry_rate" type="double" value="$(arg odometry_rate)"/>
+    <param name="publish_motor_states" type="bool" value="$(arg publish_motor_states)"/>
+    <param name="use_mockup" type="bool" value="$(arg use_mockup)"/>
+
+    <rosparam command="load" file="$(find arti_chasi_mark2)/config/vehicle.yaml"/>
+
+    <param name="vehicle/max_velocity_linear" type="double" value="$(arg max_velocity_linear)"/>
+    <param name="vehicle/max_velocity_angular" type="double" value="$(arg max_velocity_angular)"/>
+    <param name="vehicle/steering_angle_tolerance" type="double" value="$(arg steering_angle_tolerance)"/>
+    <param name="vehicle/allowed_brake_velocity" type="double" value="$(arg allowed_brake_velocity)"/>
+    <param name="vehicle/brake_velocity" type="double" value="$(arg brake_velocity)"/>
+    <param name="vehicle/brake_current" type="double" value="$(arg brake_current)"/>
+
+    <remap from="~/cmd_ackermann" to="/cmd_ackermann"/>
+    <remap from="~/supply_voltage" to="/battery_voltage"/>
+  </node>
+</launch>
+

@@ -1,0 +1,263 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Add general macros -->
+  <xacro:include filename="$(find arti_chasi_mark2)/urdf/general_macros.urdf.xacro"/>
+
+  <xacro:macro name="Chasi_MarkII" params="add_payload use_sick_mrs1000 use_realsense_d435 use_velodyne_hdl32 use_velodyne_puck_lite use_ouster_os1_16 use_ouster_os1_32 use_ouster_os1_64 use_imu use_gps">
+
+    <material name="arti_black">
+      <color rgba="0.1 0.1 0.1 1.0"/>
+    </material>
+
+    <material name="arti_blue">
+      <color rgba="0.365 0.769 0.898 1.0"/>
+    </material>
+
+    <!-- Main Links -->
+
+    <link name="base_link"> <!-- Note: if you set a null_inertial also for the base_link, the robot explodes for some reason -->
+      <!--<xacro:null_inertial/>-->
+    </link>
+
+    <link name="base_footprint">
+      <!--<xacro:null_inertial/>-->
+      <inertial>  <!-- for some reason I need this inertial (if I choose null_inertial, the robot explodes and if no inertial set, the robot doesn't spawn in Gazebo) -->
+        <mass value="0.01" />
+        <inertia  ixx="0.0" ixy="0.0"  ixz="0.0"  iyy="0.0"  iyz="0.0"  izz="0.0" />
+      </inertial>
+    </link>
+
+    <joint name="base_link_to_base_footprint" type="fixed">
+      <parent link="base_link"/>
+      <child link="base_footprint"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.1225"/>
+    </joint>
+
+    <!-- Body -->
+
+    <link name="payload_plate">
+      <visual>
+        <geometry>
+          <box size="0.80 0.60 0.01"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.19 0.19 0.19 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.8 0.6 0.01"/>
+        </geometry>
+      </collision>
+      <xacro:solid_cuboid_inertial
+              width="0.80" depth="0.60"
+              height="0.01" mass="0.5">
+        <origin xyz="0.0 0.0 0.0"/>
+      </xacro:solid_cuboid_inertial>
+      <visual>
+        <origin xyz="0.0 0.0 0.0125"/>
+        <geometry>
+          <box size="0.8 0.6 0.015"/>
+        </geometry>
+        <material name="light_grey">
+          <color rgba="0.627 0.627 0.627 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0.0 0.0 0.0125"/>
+        <geometry>
+          <box size="0.8 0.6 0.015"/>
+        </geometry>
+      </collision>
+      <xacro:solid_cuboid_inertial
+              width="0.80" depth="0.60"
+              height="0.015" mass="0.5">
+        <origin xyz="0.0 0.0 0.0125"/>
+      </xacro:solid_cuboid_inertial>
+    </link>
+
+    <joint name="payload_plate_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="payload_plate"/>
+      <origin xyz="0.0 0.0 0.275"/>
+    </joint>
+
+
+    <link name="body">
+      <xacro:solid_cuboid_inertial
+              width="0.58" depth="0.33"
+              height="0.225" mass="1.0">
+        <origin xyz="0.0 0.0 0.0"/>
+      </xacro:solid_cuboid_inertial>
+      <visual>
+        <geometry>
+          <box size="0.58 0.33 0.225"/>
+        </geometry>
+        <material name="arti_black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.58 0.33 0.225"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="body_joint" type="fixed">
+      <parent link="payload_plate"/>
+      <child link="body"/>
+      <origin xyz="0.0 0.0 -0.115"/>
+    </joint>
+
+    <gazebo reference="body">
+      <material>Gazebo/Black</material>
+    </gazebo>
+
+    <link name="chassis">
+      <xacro:solid_cuboid_inertial
+              width="0.7" depth="0.11"
+              height="0.065" mass="0.25">
+        <origin xyz="0.0 0.11 0.065"/>
+      </xacro:solid_cuboid_inertial>
+      <xacro:solid_cuboid_inertial
+              width="0.7" depth="0.06"
+              height="0.04" mass="0.2">
+        <origin xyz="0.0 -0.11 0.065"/>
+      </xacro:solid_cuboid_inertial>
+      <xacro:solid_cuboid_inertial
+              width="0.03" depth="0.4"
+              height="0.09" mass="0.2">
+        <origin xyz="0.28 0.0 0.0"/>
+      </xacro:solid_cuboid_inertial>
+      <xacro:solid_cuboid_inertial
+              width="0.03" depth="0.4"
+              height="0.09" mass="0.2">
+        <origin xyz="-0.28 0.0 0.0"/>
+      </xacro:solid_cuboid_inertial>
+      <visual>
+        <origin xyz="0.0 0.11 0.065"/>
+        <geometry>
+          <box size="0.7 0.06 0.04"/>
+        </geometry>
+        <material name="light_grey">
+          <color rgba="0.627 0.627 0.627 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0.0 0.11 0.065"/>
+        <geometry>
+          <box size="0.7 0.06 0.04"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0.0 -0.11 0.065"/>
+        <geometry>
+          <box size="0.7 0.06 0.04"/>
+        </geometry>
+        <material name="light_grey">
+          <color rgba="0.627 0.627 0.627 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0.0 -0.11 0.065"/>
+        <geometry>
+          <box size="0.7 0.06 0.04"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0.28 0.0 0.0"/>
+        <geometry>
+          <box size="0.03 0.4 0.09"/>
+        </geometry>
+        <material name="light_grey">
+          <color rgba="0.627 0.627 0.627 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0.28 0.0 0.0"/>
+        <geometry>
+          <box size="0.03 0.4 0.09"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="-0.28 0.0 0.0"/>
+        <geometry>
+          <box size="0.03 0.4 0.09"/>
+        </geometry>
+        <material name="light_grey">
+          <color rgba="0.627 0.627 0.627 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="-0.28 0.0 0.0"/>
+        <geometry>
+          <box size="0.03 0.4 0.09"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="chassis_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="chassis"/>
+      <origin xyz="0.0 0.0 0.0"/>
+    </joint>
+
+    <xacro:if value="${add_payload}">
+      <!-- Add payload -->
+      <xacro:include filename="$(find arti_chasi_mark2)/urdf/payload.urdf.xacro"/>
+    </xacro:if>    
+
+    <!-- Wheels -->
+    <xacro:include filename="$(find arti_chasi_mark2)/urdf/wheels.urdf.xacro"/>
+
+    <!-- Sensors -->
+
+    <!-- Add Gazebo plugin to publish ground truth within the Gazebo simulation -->
+    <xacro:include filename="$(find arti_chasi_mark2)/urdf/sensors/gazebo_ground_truth.urdf.xacro"/>
+
+    <xacro:if value="${use_sick_mrs1000}">
+      <!-- Add SICK MRS1000 -->
+      <xacro:include filename="$(find arti_chasi_mark2)/urdf/sensors/SICK_MRS1000.urdf.xacro"/>
+    </xacro:if>
+
+    <xacro:if value="${use_realsense_d435}">
+      <!-- Add Realsense D435 -->
+      <xacro:include filename="$(find arti_chasi_mark2)/urdf/sensors/RealSense_D435.urdf.xacro"/> 
+    </xacro:if>
+
+    <xacro:if value="${use_velodyne_hdl32}">
+      <!-- Add Velodyne HDL32 -->
+      <xacro:include filename="$(find arti_chasi_mark2)/urdf/sensors/Velodyne_HDL32.urdf.xacro"/>
+    </xacro:if>
+
+    <xacro:if value="${use_velodyne_puck_lite}">
+      <!-- Add Velodyne Puck Lite -->
+      <xacro:include filename="$(find arti_chasi_mark2)/urdf/sensors/Velodyne_Puck_Lite.urdf.xacro"/>
+    </xacro:if>
+
+    <xacro:if value="${use_ouster_os1_16}">
+      <!-- Add Ouster OS1-16 -->
+      <xacro:include filename="$(find arti_chasi_mark2)/urdf/sensors/Ouster_OS1_16.urdf.xacro"/>
+    </xacro:if>
+
+    <xacro:if value="${use_ouster_os1_32}">
+      <!-- Add Ouster OS1-32 -->
+      <xacro:include filename="$(find arti_chasi_mark2)/urdf/sensors/Ouster_OS1_32.urdf.xacro"/>
+    </xacro:if>
+
+    <xacro:if value="${use_ouster_os1_64}">
+      <!-- Add Ouster OS1-64 -->
+      <xacro:include filename="$(find arti_chasi_mark2)/urdf/sensors/Ouster_OS1_64.urdf.xacro"/>
+    </xacro:if>
+
+    <xacro:if value="${use_imu}">
+      <!-- Add IMU -->
+      <xacro:include filename="$(find arti_chasi_mark2)/urdf/sensors/imu.urdf.xacro"/>
+    </xacro:if>
+
+    <xacro:if value="${use_gps}">
+      <!-- Add GPS -->
+      <xacro:include filename="$(find arti_chasi_mark2)/urdf/sensors/gps.urdf.xacro"/>
+    </xacro:if>
+
+  </xacro:macro>
+</robot>

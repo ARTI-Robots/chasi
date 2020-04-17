@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node pkg="arti_convert_ackermann" type="arti_convert_ackermann_node" name="arti_convert_ackermann_node" output="screen">
+    </node>
+
+</launch>

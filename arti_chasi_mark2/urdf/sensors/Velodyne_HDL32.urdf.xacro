@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="velodyne_hdl32">
+
+  <xacro:arg name="gpu" default="false"/>
+  <xacro:property name="gpu" value="$(arg gpu)" />
+
+  <link name="velodyne_hdl32_link">
+    <visual>
+      <origin xyz="0 0 -0.4"/>
+      <geometry>
+        <box size="0.1 0.1 0.8" />
+      </geometry>
+      <material name="arti_black"/>
+    </visual>
+  </link>
+
+  <gazebo reference="velodyne_hdl32_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <joint name="velodyne_joint" type="fixed">
+    <parent link="payload_plate"/>
+    <child link="velodyne_hdl32_link"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.8"/>
+  </joint>
+
+  <xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro"/>
+  <HDL-32E parent="velodyne_hdl32_link" name="velodyne32" topic="/velodyne_hdl32" hz="10" samples="220" gpu="${gpu}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </HDL-32E>
+
+</robot>

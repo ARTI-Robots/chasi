@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="sick_mrs1000">
+
+  <link name="sick_link">
+  </link>
+
+  <joint name="sick_joint" type="fixed">
+    <parent link="payload_plate"/>
+    <child link="sick_link"/>
+    <origin rpy="0 0 0" xyz="0.33 0.0 -0.055"/>
+  </joint>
+
+  <xacro:include filename="$(find arti_gazebo_sick_mrs1000)/urdf/SICK_MRS1000.urdf.xacro"/>
+  <MRS1000
+          parent="sick_link"
+          name="laser"
+          topic="/point_cloud_raw"
+          hz="12.5"
+          samples="1100"
+          collision_range="0.08"
+          min_range="0.2"
+          max_range="64.0"
+          mass="0.1"
+          gpu="false">
+  </MRS1000>
+
+</robot>
